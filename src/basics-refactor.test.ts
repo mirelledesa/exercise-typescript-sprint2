@@ -416,20 +416,23 @@ describe("Problema de Set", () => {
 // */
 
  describe("Problema d'herència amb extends", () => {
-   interface User {
-     id: string;
+  interface BaseId {
+    id: string;
+  }
+  interface User extends BaseId {
+     
      firstName: string;
      lastName: string;
    }
 
-   interface Post {
-     id: string;
+   interface Post extends BaseId {
+    
      title: string;
      body: string;
    }
 
-   interface Comment {
-     id: string;
+   interface Comment extends BaseId{
+
      comment: string;
   }
 
@@ -458,7 +461,7 @@ describe("Problema de Set", () => {
      body: string;
    }
 
-   const getDefaultUserAndPosts = (): unknown => {
+   const getDefaultUserAndPosts = (): User & { posts: Post[] } => {
      return {
        id: "1",
        firstName: "Jen",
@@ -492,18 +495,19 @@ describe("Problema de Set", () => {
 // */
 
  describe("Problema d'Omit i Pick", () => {
+    
    interface User {
      id: string;
      firstName: string;
      lastName: string;
    }
+   type MyType = Omit<User, "id">;
+   
 
 //   /**
 //    * Com creem un nou tipus d'objecte amb NOMÉS les propietats
 //    * firstName i lastName de User?
 //    */
-
-   type MyType = unknown;
 
    type tests = [Expect<Equal<MyType, { firstName: string; lastName: string }>>];
 });
@@ -515,14 +519,10 @@ describe("Problema de Set", () => {
 
  describe("Problema de tipus de funció", () => {
 
-   const addListener = (onFocusChange: unknown) => {
+   const addListener = (onFocusChange: (isFocused: boolean) => void) =>{
      window.addEventListener("focus", () => {
        onFocusChange(true);
      });
-
-    window.addEventListener("blur", () => {
-      onFocusChange(false);
-    });
   };
 
   addListener((isFocused) => {
@@ -547,8 +547,8 @@ describe("Problema de tipus de funció amb promeses", () => {
       }
       
       const createThenGetUser = async (
-        createUser: unknown,
-        getUser: unknown,
+        createUser: () => Promise<string>,
+        getUser:  (id: string) => Promise<User> ,
       ): Promise<User> => {
         const userId: string = await createUser();
       
@@ -576,11 +576,11 @@ describe("Problema de tipus de funció amb promeses", () => {
   });
 });
 
-
+/*
 Repte:
 Llegeix la documentació de TypeScript sobre Utility Types i esbrina com utilitzar ReturnType per extreure el tipus de retorn de myFunc.
 Actualitza el codi perquè el següent test passi:
 type tests = [Expect<Equal<MyFuncReturn, string>>];
 Pista: pots utilitzar typeof per obtenir el tipus d'una variable o funció.
-
+*/
 
