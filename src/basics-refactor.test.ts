@@ -246,7 +246,7 @@ it("Ha de sumar els dos nombres", () => {
 
      expect(user.id).toBeTypeOf("number");
      expect(user.firstName).toBeTypeOf("string");     expect(user.lastName).toBeTypeOf("string");
-     expect(user.role).to.be.oneOf(["super-admin" "admin", "user"]);
+     expect(user.role).to.be.oneOf(["super-admin", "admin", "user"]);
 
      expect(user.posts[0].id).toBeTypeOf("number");
      expect(user.posts[0].title).toBeTypeOf("string");
@@ -394,7 +394,7 @@ describe("Problema de Set", () => {
          throw new Error("Failure!");
        }
      } catch (e) {
-      if ( e instanceof error){
+      if ( e instanceof Error){
         return e.message; 
       }
      }
@@ -520,18 +520,25 @@ describe("Problema de Set", () => {
  describe("Problema de tipus de funció", () => {
 
    const addListener = (onFocusChange: (isFocused: boolean) => void) =>{
+      if (typeof window !== "undefined"){  
      window.addEventListener("focus", () => {
        onFocusChange(true);
      });
-  };
+  
+     window.addEventListener("blur", () => {
+      onFocusChange(false);
+    });
+  }
+};
 
+ it("tipament del callback", () => {
   addListener((isFocused) => {
     console.log({ isFocused });
 
     type tests = [Expect<Equal<typeof isFocused, boolean>>];
   });
 });
-
+});
 
 //Repte 18:
 //Tipa les funcions perquè els errors desapareguin.
